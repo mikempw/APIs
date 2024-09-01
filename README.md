@@ -1,13 +1,13 @@
-Discovering APIs via syslog, through an iRule. Parsing the data to generate OpenAPI 3.0 and data visualization
+# Discovering APIs via syslog, through an iRule. Parsing the data to generate OpenAPI 3.0 and data visualization
 
-Place the Telemetry iRule on the BIG-IP
+## Place the Telemetry iRule on the BIG-IP
 
-Create a pool on the BIG-IP that references separate syslog servers we will be sending traffic to
-  Ensure this location is a server that will just receive this traffic - please don't intermingle regular syslog traffic with this collector
+## Create a pool on the BIG-IP that references separate syslog servers we will be sending traffic to
+##  Ensure this location is a server that will just receive this traffic - please don't intermingle regular syslog traffic with this collector
 
-Add the iRule to all Virtual Servers you want to capture web traffic 
+## Add the iRule to all Virtual Servers you want to capture web traffic 
 
-As per the iRule instructions
+## As per the iRule instructions
     ###User-Edit Variables start###
     set z1_http_content_type logging-pool ; #Name of LTM pool to use for receiving this data
     set z1_remoteLogProtocol UDP ; #UDP or TCP
@@ -15,30 +15,30 @@ As per the iRule instructions
     set z1_uriStringLimit 600 ; #How many characters to collect from HTTP value of URI
     ###User-Edit Variables end###
 
-To generate an OpenAPI schema
-  Run the syslog-to-openapi.py on a syslog.log file
-    Example: syslog-to-openapi.py syslog.log
+## To generate an OpenAPI schema
+ ## Run the syslog-to-openapi.py on a syslog.log file
+ ##   Example: syslog-to-openapi.py syslog.log
 
-To generate a .CSV file
-  Run the syslog-to-csv.py on a syslog.log file - this will generate a f5_api_data.csv
-  Example: syslog-to-csv.py syslog.log
+## To generate a .CSV file
+##  Run the syslog-to-csv.py on a syslog.log file - this will generate a f5_api_data.csv
+ ## Example: syslog-to-csv.py syslog.log
 
-Example syslog.log to f5_api_data.csv output:
-timestamp	http_uri	http_host	http_method	http_status	virtual_server	pool	http_referrer	http_content_type	http_user_agent	http_version	vip
+### Example syslog.log to f5_api_data.csv output:
+_timestamp	http_uri	http_host	http_method	http_status	virtual_server	pool	http_referrer	http_content_type	http_user_agent	http_version	vip
 9/1/2024 0:00	/f5_waf_tester/?f5_waf_tester_parameter=AND+SELECT+SUBSTRING%28column_name%2C1%2C1%29+FROM+information_schema.columns+%3E+%27A%27	10.1.10.20	GET	404	/Common/west-app-vs20	/Common/php_pool 10.1.20.12 80			python-requests/2.25.1	1.1	10.1.10.20
 9/1/2024 0:00	/f5_waf_tester/	10.1.10.20	GET	404	/Common/west-app-vs20	/Common/php_pool 10.1.20.12 80			f5_waf_tester 0.1.1b	1.1	10.1.10.20
 9/1/2024 0:00	/../../etc/passwd	10.1.10.20	GET	400	/Common/west-app-vs20	/Common/php_pool 10.1.20.12 80			f5_waf_tester 0.1.1b	1.1	10.1.10.20
 9/1/2024 0:00	/f5_waf_tester/?f5_waf_tester_parameter=%2526%2520powershell-WindowStyle%2520Hidden%2520-encode	10.1.10.20	GET	404	/Common/west-app-vs20	/Common/php_pool 10.1.20.12 80			f5_waf_tester 0.1.1b	1.1	10.1.10.20
 9/1/2024 0:00	/f5_waf_tester/%7B%24where%3A+function%28%29+%7B+return+db.getCollectionNames%28%29%3B+%7D%7D	10.1.10.30	GET	404	/Common/west-app-vs30	/Common/image_pool 10.1.20.15 80			f5_waf_tester 0.1.1b	1.1	10.1.10.30
 9/1/2024 0:01	/f5_waf_tester/?f5_waf_tester_parameter=or+1%3D1+--	10.1.10.30	GET	404	/Common/west-app-vs30	/Common/image_pool 10.1.20.15 80			f5_waf_tester 0.1.1b	1.1	10.1.10.30
-9/1/2024 0:01	/f5_waf_tester/?f5_waf_tester_parameter=O%3A6%3A%22+attack+%22%3A3%3A%7Bs%3A4%3A%22+file+%22%3Bs%3A9%3A%22+shell.php+%22%3Bs%3A4%3A%22+data+%22%3Bs%3A19%3A%22+%3C++%3F+php+phpinfo%28%29%3B%3F++%3E+%22%3B%7D	10.1.10.30	GET	404	/Common/west-app-vs30	/Common/image_pool 10.1.20.15 80			f5_waf_tester 0.1.1b	1.1	10.1.10.30
+9/1/2024 0:01	/f5_waf_tester/?f5_waf_tester_parameter=O%3A6%3A%22+attack+%22%3A3%3A%7Bs%3A4%3A%22+file+%22%3Bs%3A9%3A%22+shell.php+%22%3Bs%3A4%3A%22+data+%22%3Bs%3A19%3A%22+%3C++%3F+php+phpinfo%28%29%3B%3F++%3E+%22%3B%7D	10.1.10.30	GET	404	/Common/west-app-vs30	/Common/image_pool 10.1.20.15 80			f5_waf_tester 0.1.1b	1.1	10.1.10.30_
 
-To generate an overview of APIs, Status Code etc..
-  Run the api-summary-generator.py on the f5_api_data.csv file created above
-  Example: api-summary-generator.py f5_api_data.csv
+## To generate an overview of APIs, Status Code etc..
+  ## Run the api-summary-generator.py on the f5_api_data.csv file created above
+ ## Example: api-summary-generator.py f5_api_data.csv
 
-Example OpenAPI schema output:
-  [Uploading openapi_s{
+### Example OpenAPI schema output:
+ _ [Uploading openapi_s{
   "openapi": "3.0.0",
   "info": {
     "title": "Discovered API from F5 Syslog",
@@ -2296,4 +2296,4 @@ Example OpenAPI schema output:
       }
     }
   }
-}chema.json…]()
+}chema.json…]()_
