@@ -1,4 +1,3 @@
-[openapi_schema.json](https://github.com/user-attachments/files/16830707/openapi_schema.json)# APIs
 Discovering APIs via syslog, through an iRule. Parsing the data to generate OpenAPI 3.0 and data visualization
 
 Place the Telemetry iRule on the BIG-IP
