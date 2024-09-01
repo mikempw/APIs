@@ -176,4 +176,4 @@ def main(csv_file, output_file):
     print(f"API summary has been written to {output_file}")
 
 if __name__ == "__main__":
-    main('f5_data_for_grafana1.csv', 'api_summary_with_separate_trace_and_status.html')
+    main('f5_api_data.csv', 'api_summary_with_separate_trace_and_status.html')
